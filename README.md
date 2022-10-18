@@ -215,6 +215,35 @@ Thread-0 TERMINATED
 main goodbye
 ```
 
+The `main` method must throw the exception if a `try-catch` statement is not used
+when calling `sleep()` or `join()`:
+
+```java
+    public static void main(String[] args) throws InterruptedException {
+
+        System.out.println(Thread.currentThread().getName() + " " + Thread.currentThread().getState());  //main RUNNABLE
+
+        Thread t0 = new Thread( () -> System.out.println(Thread.currentThread().getName() + " hello") );  //Thread-0 hello
+        System.out.println(t0.getName() + " " + t0.getState());  //Thread-0 NEW
+
+        Thread t1 = new Thread( () -> System.out.println(Thread.currentThread().getName() + " howdy") ); //Thread-1 howdy
+        System.out.println(t1.getName() + " " + t1.getState());  //Thread-1 NEW
+
+        t0.start();
+        System.out.println(t0.getName() + " " + t0.getState());  //Thread-0 RUNNABLE
+
+        t1.start();
+        System.out.println(t1.getName() + " " + t1.getState());  //Thread-1 RUNNABLE
+
+
+        t0.join(); //main thread put in WAITING state until t0 terminates
+        
+        System.out.println(t0.getName() + " " + t0.getState());  //Thread-0 TERMINATED
+
+        System.out.println(Thread.currentThread().getName() + " goodbye"); //main goodbye
+    }
+```
+
 ## Conclusion
 
 We’ve learned about the various states of a thread and their lifecycle. As we
