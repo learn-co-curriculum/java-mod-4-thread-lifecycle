@@ -57,7 +57,7 @@ Let’s look at some of these states with example code.
 
 ```java
 public class Example {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         System.out.println(Thread.currentThread().getName() + " " + Thread.currentThread().getState());  //main RUNNABLE
 
         Thread t0 = new Thread( () -> System.out.println(Thread.currentThread().getName() + " hello") );  //Thread-0 hello
@@ -113,9 +113,10 @@ The sleeping thread's state changes from `RUNNABLE` to `TIMED_WAITING` and the
 scheduler picks another thread to execute.  The `sleep()` method
 may throw an exception, so the call is surrounded in with `try-catch` statements.
 
+
 ```java
 public class Example {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args)  {
         System.out.println(Thread.currentThread().getName() + " " + Thread.currentThread().getState());  //main RUNNABLE
 
         Thread t0 = new Thread( () -> System.out.println(Thread.currentThread().getName() + " hello") );  //Thread-0 hello
@@ -169,7 +170,8 @@ thread referenced by `t0` finishes executing:
 
 ```java
 public class Example {
-    public static void main(String[] args) throws InterruptedException {
+    
+    public static void main(String[] args)  {
 
         System.out.println(Thread.currentThread().getName() + " " + Thread.currentThread().getState());  //main RUNNABLE
 
@@ -184,9 +186,13 @@ public class Example {
 
         t1.start();
         System.out.println(t1.getName() + " " + t1.getState());  //Thread-1 RUNNABLE
-
-
-        t0.join(); //main thread put in WAITING state until t0 terminates
+        
+        try {
+            t0.join(); //main thread put in WAITING state until t0 terminates
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        
         System.out.println(t0.getName() + " " + t0.getState());  //Thread-0 TERMINATED
 
         System.out.println(Thread.currentThread().getName() + " goodbye"); //main goodbye
