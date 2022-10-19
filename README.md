@@ -216,7 +216,8 @@ main goodbye
 ```
 
 The `main` method must throw the exception if a `try-catch` statement is not used
-when calling `sleep()` or `join()`:
+when calling `sleep()` or `join()`, as shown below.  The preferred way though would be
+to use a `try-catch` to handle the exception.
 
 ```java
     public static void main(String[] args) throws InterruptedException {
